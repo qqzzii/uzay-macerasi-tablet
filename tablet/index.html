@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#16215c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Uzay Macerası - Toplama ve Çıkarma Oyunu</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="bg-stars" aria-hidden="true"></div>
+<div id="confetti-layer" aria-hidden="true"></div>
+
+<div id="app">
+
+  <!-- BAŞLANGIÇ EKRANI -->
+  <section id="screen-start" class="screen active">
+    <div class="start-card">
+      <div class="mascot-big">👦🚀</div>
+      <h1>Uzay Macerası</h1>
+      <p class="subtitle">Kaptan Doruk ile Gezegenler Arası Toplama ve Çıkarma</p>
+      <button class="btn btn-primary btn-big" id="btn-play">▶️ Başla</button>
+      <button class="btn btn-ghost" id="btn-howto">❓ Nasıl Oynanır?</button>
+      <button class="btn btn-tiny-link" id="btn-reset">İlerlemeyi Sıfırla</button>
+    </div>
+  </section>
+
+  <!-- NASIL OYNANIR EKRANI -->
+  <section id="screen-howto" class="screen">
+    <div class="howto-card">
+      <h2>Nasıl Oynanır? 🎮</h2>
+      <ul class="howto-list">
+        <li>🚀 Kaptan Doruk'la güneş sistemindeki gezegenleri keşfet!</li>
+        <li>🔢 Doğru cevaba parmağınla dokun.</li>
+        <li>⭐ Her gezegeni bitirince yıldız kazan!</li>
+        <li>🔓 Yıldız kazandıkça yeni gezegenler açılır.</li>
+      </ul>
+      <button class="btn btn-primary" id="btn-howto-back">Tamam, Anladım!</button>
+    </div>
+  </section>
+
+  <!-- BÖLÜM HARİTASI -->
+  <section id="screen-map" class="screen">
+    <div class="map-topbar">
+      <button class="btn btn-round" id="btn-map-home">🏠</button>
+      <h2>Gezegen Haritası</h2>
+      <div class="spacer"></div>
+    </div>
+    <div class="map-path" id="map-path"></div>
+  </section>
+
+  <!-- OYUN EKRANI -->
+  <section id="screen-game" class="screen">
+    <div class="space-scene" id="space-scene"></div>
+
+    <div class="game-topbar">
+      <button class="btn btn-round" id="btn-game-back">⬅️</button>
+      <div class="game-title" id="game-level-title">Bölüm</div>
+      <div class="game-progress" id="game-progress">İlerleme 0/6</div>
+    </div>
+
+    <div class="streak-badge hidden" id="streak-badge">🔥 <span id="streak-count">0</span></div>
+
+    <div class="mission-progress">
+      <div class="mission-bar-wrap">
+        <span class="mission-label" id="mission-label">Yakıt Deposu</span>
+        <div class="mission-bar">
+          <div class="mission-bar-fill" id="mission-bar-fill"></div>
+          <div class="mission-bar-notches" id="mission-bar-notches"></div>
+        </div>
+      </div>
+      <span class="mission-icon" id="mission-icon">⛽</span>
+    </div>
+
+    <div class="game-area" id="game-area">
+      <!-- dinamik içerik JS ile oluşturulur -->
+    </div>
+  </section>
+
+</div>
+
+<!-- GÖREV BRİFİNGİ (HİKAYE GİRİŞİ) OVERLAY -->
+<div id="overlay-levelintro" class="overlay hidden">
+  <div class="complete-card story-card">
+    <div class="story-planet-icon" id="intro-planet-icon">🌙</div>
+    <h2 id="intro-planet-title">Ay Üssü</h2>
+    <p class="story-text" id="intro-story-text">Hikaye metni...</p>
+    <p class="story-goal" id="intro-goal-text">Görev metni...</p>
+    <div class="complete-buttons">
+      <button class="btn btn-ghost" id="btn-intro-back">⬅️ Harita</button>
+      <button class="btn btn-primary" id="btn-intro-start">Göreve Başla 🚀</button>
+    </div>
+  </div>
+</div>
+
+<!-- BÖLÜM TAMAMLANDI OVERLAY -->
+<div id="overlay-levelcomplete" class="overlay hidden">
+  <div class="complete-card">
+    <h2>Harika İş! 🎉</h2>
+    <div class="stars-display" id="stars-display">
+      <span class="star" data-n="1">☆</span>
+      <span class="star" data-n="2">☆</span>
+      <span class="star" data-n="3">☆</span>
+    </div>
+    <p class="story-text" id="complete-story-text">Görev tamamlandı!</p>
+    <div class="complete-buttons">
+      <button class="btn btn-ghost" id="btn-complete-map">🗺️ Harita</button>
+      <button class="btn btn-primary" id="btn-complete-next">Sonraki Gezegen ▶️</button>
+    </div>
+  </div>
+</div>
+
+<!-- ROKET UÇUŞ ANİMASYONU (SIRADAKİ GEZEGENE GEÇİŞ) -->
+<div id="overlay-rocketflight" class="overlay hidden">
+  <div class="flight-scene">
+    <div class="flight-stars" id="flight-stars"></div>
+    <div class="flight-planet flight-planet-from" id="flight-planet-from">🌙</div>
+    <div class="flight-rocket" id="flight-rocket">🚀</div>
+    <div class="flight-planet flight-planet-to" id="flight-planet-to">🟤</div>
+  </div>
+  <p class="flight-caption">Sıradaki gezegene uçuluyor...</p>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

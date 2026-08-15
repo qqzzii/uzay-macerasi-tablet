@@ -1,0 +1,12 @@
+{
+  "name": "Uzay Macerası - Toplama ve Çıkarma Oyunu",
+  "short_name": "Uzay Macerası",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#16215c",
+  "theme_color": "#16215c",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
